@@ -4,8 +4,9 @@
     class="flex items-center px-4 py-2 rounded hover:bg-blue-700 transition"
     :class="{ 'bg-blue-800': route.path === to }"
   >
-    <i :class="icon + ' text-lg mr-3'"></i>
-    <span class="font-medium">{{ label }}</span>
+    <component :is="icon" class="w-5 h-7 mr-3 inline-block align-middle relative top-[1px]" />
+
+    <span class="font-medium align-middle">{{ label }}</span>
   </router-link>
 </template>
 
@@ -13,7 +14,7 @@
 import { useRoute } from 'vue-router'
 
 defineProps({
-  icon: String,
+  icon: [Object, Function],
   label: String,
   to: String,
 })

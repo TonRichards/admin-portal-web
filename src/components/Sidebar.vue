@@ -3,18 +3,18 @@
     <div class="p-6 font-bold text-2xl border-b border-blue-800">Admin Portal</div>
 
     <nav class="flex-1 p-4 space-y-2 text-sm">
-      <SidebarItem icon="mdi-view-dashboard-outline" label="Dashboard" to="/dashboard" />
-      <SidebarItem icon="mdi-folder-outline" label="Project Management" to="/projects" />
-      <SidebarItem icon="mdi-receipt-outline" label="Orders" to="/orders" />
-      <SidebarItem icon="mdi-truck-outline" label="Shipping" to="/shippings" />
+      <SidebarItem :icon="ViewDashboardOutlineIcon" label="Dashboard" to="/dashboard" />
+      <SidebarItem :icon="FolderOutlineIcon" label="Project Management" to="/projects" />
+      <SidebarItem :icon="ReceiptOutlineIcon" label="Orders" to="/orders" />
+      <SidebarItem :icon="TruckOutlineIcon" label="Shipping" to="/shippings" />
 
       <SidebarCollapseItem
-        icon="mdi-cog-outline"
+        :icon="CogOutlineIcon"
         label="Settings"
         :children="[
-          { label: 'Users', to: '/users', icon: 'mdi-account-outline' },
-          { label: 'Roles', to: '/roles', icon: 'mdi-shield-account-outline' },
-          { label: 'Permissions', to: '/permissions', icon: 'mdi-key-outline' },
+          { label: 'Users', to: '/users', icon: AccountOutlineIcon },
+          { label: 'Roles', to: '/roles', icon: ShieldAccountOutlineIcon  },
+          { label: 'Permissions', to: '/permissions', icon: KeyOutlineIcon  },
         ]"
       />
     </nav>
@@ -24,4 +24,13 @@
 <script setup>
 import SidebarItem from './SidebarItem.vue'
 import SidebarCollapseItem from './SidebarCollapseItem.vue'
+
+import ViewDashboardOutlineIcon from 'vue-material-design-icons/ViewDashboardOutline.vue'
+import FolderOutlineIcon from 'vue-material-design-icons/FolderOutline.vue'
+import ReceiptOutlineIcon from 'vue-material-design-icons/ReceiptOutline.vue'
+import TruckOutlineIcon from 'vue-material-design-icons/TruckOutline.vue'
+import CogOutlineIcon from 'vue-material-design-icons/CogOutline.vue'
+import AccountOutlineIcon from 'vue-material-design-icons/AccountOutline.vue'
+import ShieldAccountOutlineIcon from 'vue-material-design-icons/ShieldAccountOutline.vue'
+import KeyOutlineIcon from 'vue-material-design-icons/KeyOutline.vue'
 </script>

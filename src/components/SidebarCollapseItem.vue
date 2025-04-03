@@ -6,10 +6,10 @@
       :class="{ 'bg-blue-800': isAnyActive }"
     >
       <div class="flex items-center">
-        <i :class="icon + ' text-lg mr-3'"></i>
+        <component :is="icon" class="w-5 h-7 mr-3 inline-block align-middle relative top-[1px]" />
         <span class="font-medium">{{ label }}</span>
       </div>
-      <i :class="open ? 'mdi-chevron-down' : 'mdi-chevron-right'" class="text-sm" />
+      <component :is="open ? ChevronDownIcon : ChevronRightIcon" class="w-4 h-4" />
     </button>
 
     <div v-if="open" class="ml-6 mt-1 space-y-1">
@@ -20,7 +20,7 @@
         class="flex items-center px-3 py-1 rounded hover:bg-blue-700 transition text-sm"
         :class="{ 'bg-blue-800': route.path === item.to }"
       >
-        <i :class="item.icon + ' text-base mr-2'"></i>
+        <component :is="item.icon" class="w-5 h-7 mr-3" />
         {{ item.label }}
       </router-link>
     </div>
@@ -31,8 +31,11 @@
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
+import ChevronRightIcon from 'vue-material-design-icons/ChevronRight.vue'
+import ChevronDownIcon from 'vue-material-design-icons/ChevronDown.vue'
+
 const props = defineProps({
-  icon: String,
+  icon: [Object, Function],
   label: String,
   children: Array,
 })
