@@ -6,7 +6,7 @@
       <SidebarItem icon="mdi-view-dashboard-outline" label="Dashboard" to="/dashboard" />
       <SidebarItem icon="mdi-folder-outline" label="Project Management" to="/projects" />
       <SidebarItem icon="mdi-receipt-outline" label="Orders" to="/orders" />
-      <SidebarItem icon="mdi-truck-outline" label="Shipping" to="/shipping" />
+      <SidebarItem icon="mdi-truck-outline" label="Shipping" to="/shippings" />
 
       <SidebarCollapseItem
         icon="mdi-cog-outline"
