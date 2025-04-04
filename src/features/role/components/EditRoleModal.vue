@@ -79,7 +79,6 @@
 
     watch(
         () => [props.role, props.permissions], ([role, permissions]) => {
-            console.log('💡 Watching role + permissions', role, permissions)
             if (role && permissions.length > 0) {
                 form.name = role.name
                 form.display_name = role.display_name

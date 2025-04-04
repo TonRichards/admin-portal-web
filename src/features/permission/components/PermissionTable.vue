@@ -24,8 +24,8 @@
             <td class="px-4 py-2">{{ permission.label_en }}</td>
             <td class="px-4 py-2">{{ permission.description_en }}</td>
             <td class="px-4 py-2 space-x-2">
-              <button class="text-blue-600 hover:underline">Edit</button>
-              <button class="text-red-600 hover:underline">Delete</button>
+              <button @click="editPermission(permission)" class="text-blue-600 hover:underline">Edit</button>
+              <button @click="confirmDelete(permission)" class="text-red-600 hover:underline">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -65,7 +65,7 @@ const props = defineProps({
   currentPage: Number
 })
 
-const emit = defineEmits(['update:currentPage'])
+const emit = defineEmits(['update:currentPage', 'edit', 'delete'])
 
 const goToPrev = () => {
   if (props.pagination?.prev_page_url && props.currentPage > 1) {
@@ -77,6 +77,14 @@ const goToNext = () => {
   if (props.pagination?.next_page_url && props.currentPage < props.pagination.last_page) {
     emit('update:currentPage', props.currentPage + 1)
   }
+}
+
+const editPermission = (permission) => {
+  emit('edit', permission)
+}
+
+const confirmDelete = (permission) => {
+  emit('delete', permission)
 }
 
 </script>

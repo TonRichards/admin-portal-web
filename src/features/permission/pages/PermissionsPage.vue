@@ -42,18 +42,18 @@
         @saved="savePermission"
       />
 
-      <!-- <EditPermissionModal
+      <EditPermissionModal
         v-if="isEditModalOpen"
-        :permission="selectedPermission"
+        :permission="permissionToEdit"
         @close="isEditModalOpen = false"
-        @updated="fetchPermissions"
+        @updated="updatePermission"
       />
 
       <ConfirmDeleteModal
         v-if="isDeleteModalOpen"
         @cancel="isDeleteModalOpen = false"
         @confirm="deletePermission"
-      /> -->
+      />
     </main>
   </div>
 </template>
@@ -64,8 +64,8 @@ import axiosUser from '@/lib/axiosUser'
 import Sidebar from '@/components/Sidebar.vue'
 import PermissionTable from '@/features/permission/components/PermissionTable.vue'
 import AddPermissionModal from '@/features/permission/components/AddPermissionModal.vue'
-// import EditPermissionModal from '@/features/permission/components/EditPermissionModal.vue'
-// import ConfirmDeleteModal from '@/features/permission/components/ConfirmDeletePermissionModal.vue'
+import EditPermissionModal from '@/features/permission/components/EditPermissionModal.vue'
+import ConfirmDeleteModal from '@/features/permission/components/ConfirmDeletePermissionModal.vue'
 
 const permissions = ref([])
 const pagination = ref(null)
@@ -74,7 +74,7 @@ const currentPage = ref(1)
 
 const isAddModalOpen = ref(false)
 const isEditModalOpen = ref(false)
-const selectedPermission = ref(null)
+const permissionToEdit = ref(null)
 const isDeleteModalOpen = ref(false)
 const permissionToDelete = ref(null)
 
@@ -109,16 +109,28 @@ const savePermission = async (payload) => {
   }
 }
 
-onMounted(fetchPermissions)
-
-watch([searchQuery, currentPage], fetchPermissions)
+const updatePermission = async (payload) => {
+  try {
+    await axiosUser.put(`/permissions/${payload.id}`, {
+      name: payload.name,
+      label_en: payload.label_en,
+      label_th: payload.label_th,
+      description_en: payload.description_en,
+      description_th: payload.description_th,
+    })
+    isEditModalOpen.value = false
+    fetchPermissions()
+  } catch (err) {
+    alert(err.response?.data?.message || err.message)
+  }
+}
 
 const openAddModal = () => {
   isAddModalOpen.value = true
 }
 
 const editPermission = (permission) => {
-  selectedPermission.value = permission
+  permissionToEdit.value = permission
   isEditModalOpen.value = true
 }
 
@@ -132,4 +144,9 @@ const deletePermission = async () => {
   isDeleteModalOpen.value = false
   fetchPermissions()
 }
+
+onMounted(fetchPermissions)
+
+watch([searchQuery, currentPage], fetchPermissions)
+
 </script>
