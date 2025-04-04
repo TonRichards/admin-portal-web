@@ -40,10 +40,10 @@
                 <span
                   v-else
                   v-for="permission in role.permissions"
-                  :key="permission"
+                  :key="permission.name"
                   class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
                 >
-                  {{ permission }}
+                  {{ permission.label_en }}
                 </span>
               </div>
             </td>
@@ -78,7 +78,6 @@
 
 <script setup>
 import { ref } from 'vue'
-
 
 const roles = ref([])
 
