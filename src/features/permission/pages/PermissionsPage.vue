@@ -34,9 +34,9 @@
         @edit="editPermission"
         @delete="confirmDelete"
       />
-
-      <!-- Modals -->
-      <AddPermissionModal
+    </main>
+    <!-- Modals -->
+    <AddPermissionModal
         v-if="isAddModalOpen"
         @close="isAddModalOpen = false"
         @saved="savePermission"
@@ -54,7 +54,6 @@
         @cancel="isDeleteModalOpen = false"
         @confirm="deletePermission"
       />
-    </main>
   </div>
 </template>
 

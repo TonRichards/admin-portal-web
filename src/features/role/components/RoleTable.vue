@@ -1,25 +1,10 @@
 <template>
   <div class="space-y-4">
-    <!-- Header -->
-    <div class="flex justify-between items-center">
-      <h1 class="text-2xl font-bold">Role List</h1>
-      <button
-        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl shadow"
-        @click="addRole"
-      >
-        + Add Role
-      </button>
-    </div>
+    <div v-if="props.isLoading" class="text-center py-10 text-gray-500">Loading roles...</div>
+    <div v-else-if="props.error" class="text-center text-red-500">{{ error }}</div>
+    <div v-if="!props.isLoading && props.roles.length === 0" class="text-center py-8 text-gray-500">No roles found.</div>
 
-    <!-- Search -->
-    <input
-      type="text"
-      placeholder="Search roles..."
-      class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring"
-    />
-
-    <!-- Table -->
-    <div class="overflow-auto rounded-xl shadow border bg-white">
+    <div v-else class="overflow-auto rounded-xl shadow border bg-white">
       <table class="min-w-full text-sm text-left">
         <thead class="bg-gray-100">
           <tr>
@@ -65,7 +50,7 @@
           </tr>
 
           <!-- ถ้าไม่มีข้อมูล -->
-          <tr v-if="roles.length === 0">
+          <tr v-if="props.roles.length === 0">
             <td colspan="3" class="px-6 py-4 text-center text-gray-400">
               No roles found.
             </td>
@@ -73,17 +58,31 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-end items-center space-x-2 mt-4" v-if="props.pagination">
+      <button
+        :disabled="!props.pagination.prev_page_url"
+        @click="goToPrev"
+        class="px-3 py-1 rounded border bg-white hover:bg-gray-100"
+      >
+        Prev
+      </button>
+
+      <span>Page {{ props.pagination.current_page }} of {{ props.pagination.last_page }}</span>
+
+      <button
+        :disabled="!props.pagination.next_page_url"
+        @click="goToNext"
+        class="px-3 py-1 rounded border bg-white hover:bg-gray-100"
+      >
+        Next
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
-const roles = ref([])
-
-const addRole = () => {
-  emit('add')
-}
 
 const editRole = (role) => {
   emit('edit', role)
@@ -93,9 +92,25 @@ const confirmDelete = (role) => {
   emit('delete', role)
 }
 
-const emit = defineEmits(['edit', 'delete', 'add'])
+const emit = defineEmits(['update:currentPage', 'edit', 'delete'])
+
+const goToPrev = () => {
+  if (props.pagination?.prev_page_url && props.currentPage > 1) {
+    emit('update:currentPage', props.currentPage - 1)
+  }
+}
+
+const goToNext = () => {
+  if (props.pagination?.next_page_url && props.currentPage < props.pagination.last_page) {
+    emit('update:currentPage', props.currentPage + 1)
+  }
+}
 
 const props = defineProps({
-  roles: Array
+  roles: Array,
+  isLoading: Boolean,
+  error: Object,
+  pagination: Object,
+  currentPage: Number
 })
 </script>
