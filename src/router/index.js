@@ -4,6 +4,7 @@ import LoginPage from '@/features/auth/pages/LoginPage.vue'
 import DashboardPage from '@/features/dashboard/pages/DashboardPage.vue'
 import PermissionsPage from '@/features/permission/pages/PermissionsPage.vue'
 import UsersPage from '@/features/user/pages/UsersPage.vue'
+import UserCreatePage from '@/features/user/pages/UserCreatePage.vue'
 import RolesPage from '@/features/role/pages/RolesPage.vue'
 import ProjectsPage from '@/features/project/pages/ProjectsPage.vue'
 import OrdersPage from '@/features/order/pages/OrdersPage.vue'
@@ -15,6 +16,7 @@ const routes = [
   { path: '/dashboard', component: DashboardPage },
   { path: '/permissions', component: PermissionsPage },
   { path: '/users', component: UsersPage },
+  { path: '/users/create', component: UserCreatePage },
   { path: '/roles', component: RolesPage },
   { path: '/projects', component: ProjectsPage },
   { path: '/orders', component: OrdersPage },
