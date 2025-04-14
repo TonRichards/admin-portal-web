@@ -1,6 +1,6 @@
 <template>
   <aside class="w-64 bg-blue-900 text-white flex flex-col shadow-lg">
-    <div class="p-6 font-bold text-2xl border-b border-blue-800">Admin Portal</div>
+    <div class="p-6 font-bold text-2xl border-b border-blue-800">ECOM-ERP</div>
 
     <nav class="flex-1 p-4 space-y-2 text-sm">
       <SidebarItem :icon="ViewDashboardOutlineIcon" label="Dashboard" to="/dashboard" />
@@ -13,8 +13,9 @@
         label="Settings"
         :children="[
           { label: 'Users', to: '/users', icon: AccountOutlineIcon },
-          { label: 'Roles', to: '/roles', icon: ShieldAccountOutlineIcon  },
-          { label: 'Permissions', to: '/permissions', icon: KeyOutlineIcon  },
+          { label: 'Roles', to: '/roles', icon: ShieldAccountOutlineIcon },
+          { label: 'Permissions', to: '/permissions', icon: KeyOutlineIcon },
+          { label: 'Organizations', to: '/organizations', icon: OfficeBuildingIcon },
         ]"
       />
     </nav>
@@ -22,6 +23,7 @@
 </template>
 
 <script setup>
+
 import SidebarItem from './SidebarItem.vue'
 import SidebarCollapseItem from './SidebarCollapseItem.vue'
 
@@ -33,4 +35,6 @@ import CogOutlineIcon from 'vue-material-design-icons/CogOutline.vue'
 import AccountOutlineIcon from 'vue-material-design-icons/AccountOutline.vue'
 import ShieldAccountOutlineIcon from 'vue-material-design-icons/ShieldAccountOutline.vue'
 import KeyOutlineIcon from 'vue-material-design-icons/KeyOutline.vue'
+import OfficeBuildingIcon from 'vue-material-design-icons/OfficeBuilding.vue';
+
 </script>
