@@ -1,11 +1,6 @@
 <template>
-  <div class="flex h-screen">
-    <!-- Sidebar -->
-    <Sidebar />
-
-    <!-- Content -->
+  <AdminLayout>
     <main class="flex-1 p-6 bg-gray-50 overflow-auto space-y-6">
-      <!-- Header -->
       <div class="flex justify-between items-center">
         <h1 class="text-2xl font-bold">Role List</h1>
         <button
@@ -16,51 +11,51 @@
         </button>
       </div>
 
-      <!-- Search -->
       <input
         v-model="searchQuery"
         type="text"
         placeholder="Search roles..."
         class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring"
       />
-        <RoleTable
-          :roles="roles"
-          :is-loading="isLoading"
-          :error="error"
-          :pagination="pagination"
-          v-model:current-page="currentPage"
-          @edit="editRole"
-          @delete="confirmDelete"
-        />
-      </main>
 
-      <AddRoleModal
-        v-if="isAddModalOpen"
-        :permissions="allPermissions"
-        @close="isAddModalOpen = false"
-        @saved="saveNewRole"
+      <RoleTable
+        :roles="roles"
+        :is-loading="isLoading"
+        :error="error"
+        :pagination="pagination"
+        v-model:current-page="currentPage"
+        @edit="editRole"
+        @delete="confirmDelete"
       />
+    </main>
+  </AdminLayout>
 
-      <EditRoleModal
-        v-if="isEditModalOpen && allPermissions.length > 0 && selectedRole"
-        :role="selectedRole"
-        :permissions="allPermissions"
-        @close="isEditModalOpen = false"
-        @updated="updateRole"
-      />
+  <AddRoleModal
+    v-if="isAddModalOpen"
+    :permissions="allPermissions"
+    @close="isAddModalOpen = false"
+    @saved="saveNewRole"
+  />
 
-      <ConfirmDeleteModal
-        v-if="isDeleteModalOpen"
-        @cancel="isDeleteModalOpen = false"
-        @confirm="deleteRole"
-      />
-  </div>
+  <EditRoleModal
+    v-if="isEditModalOpen && allPermissions.length > 0 && selectedRole"
+    :role="selectedRole"
+    :permissions="allPermissions"
+    @close="isEditModalOpen = false"
+    @updated="updateRole"
+  />
+
+  <ConfirmDeleteModal
+    v-if="isDeleteModalOpen"
+    @cancel="isDeleteModalOpen = false"
+    @confirm="deleteRole"
+  />
 </template>
-  
-  <script setup>
+
+<script setup>
   import { ref, onMounted, watch } from 'vue'
   import axiosUser from '@/lib/axiosUser'
-  import Sidebar from '@/components/Sidebar.vue'
+  import AdminLayout from '@/layouts/AdminLayout.vue'
   import RoleTable from '@/features/role/components/RoleTable.vue'
   import AddRoleModal from '@/features/role/components/AddRoleModal.vue'
   import EditRoleModal from '@/features/role/components/EditRoleModal.vue'
@@ -88,8 +83,11 @@
   const fetchRoles = async () => {
     try {
       isLoading.value = true
+
+      const applicationId = import.meta.env.VITE_APPLICATION_ID
       const response = await axiosUser.get('/roles', {
         params: {
+          application_id: applicationId,
           page: currentPage.value,
           per_page: itemsPerPage,
           q: searchQuery.value,

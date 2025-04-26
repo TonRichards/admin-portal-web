@@ -60,7 +60,7 @@
         </div>
     </div>
 </template>
-  
+
 <script setup>
     import { reactive, watch } from 'vue'
 
@@ -89,7 +89,7 @@
         },
         { immediate: true }
     )
-    
+
     const submit = () => {
         if (!form.name.trim()) {
         alert('Please enter a role name')

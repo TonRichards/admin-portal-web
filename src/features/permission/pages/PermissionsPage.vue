@@ -1,11 +1,7 @@
 <template>
-  <div class="flex h-screen">
-    <!-- Sidebar -->
-    <Sidebar />
-
+  <AdminLayout>
     <!-- Content -->
     <main class="flex-1 p-6 bg-gray-50 overflow-auto space-y-6">
-      <!-- Header + Add -->
       <div class="flex justify-between items-center">
         <h1 class="text-2xl font-bold">Permission List</h1>
         <button
@@ -35,32 +31,33 @@
         @delete="confirmDelete"
       />
     </main>
-    <!-- Modals -->
-    <AddPermissionModal
-        v-if="isAddModalOpen"
-        @close="isAddModalOpen = false"
-        @saved="savePermission"
-      />
+  </AdminLayout>
 
-      <EditPermissionModal
-        v-if="isEditModalOpen"
-        :permission="permissionToEdit"
-        @close="isEditModalOpen = false"
-        @updated="updatePermission"
-      />
+  <!-- Modals -->
+  <AddPermissionModal
+    v-if="isAddModalOpen"
+    @close="isAddModalOpen = false"
+    @saved="savePermission"
+  />
 
-      <ConfirmDeleteModal
-        v-if="isDeleteModalOpen"
-        @cancel="isDeleteModalOpen = false"
-        @confirm="deletePermission"
-      />
-  </div>
+  <EditPermissionModal
+    v-if="isEditModalOpen"
+    :permission="permissionToEdit"
+    @close="isEditModalOpen = false"
+    @updated="updatePermission"
+  />
+
+  <ConfirmDeleteModal
+    v-if="isDeleteModalOpen"
+    @cancel="isDeleteModalOpen = false"
+    @confirm="deletePermission"
+  />
 </template>
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import axiosUser from '@/lib/axiosUser'
-import Sidebar from '@/components/Sidebar.vue'
+import AdminLayout from '@/layouts/AdminLayout.vue'
 import PermissionTable from '@/features/permission/components/PermissionTable.vue'
 import AddPermissionModal from '@/features/permission/components/AddPermissionModal.vue'
 import EditPermissionModal from '@/features/permission/components/EditPermissionModal.vue'

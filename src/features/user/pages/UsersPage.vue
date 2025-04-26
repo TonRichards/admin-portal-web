@@ -1,11 +1,6 @@
 <template>
-  <div class="flex h-screen">
-    <!-- Sidebar -->
-    <Sidebar />
-
-    <!-- Content -->
+  <AdminLayout>
     <main class="flex-1 p-6 bg-gray-50 overflow-auto space-y-6">
-      <!-- Header -->
       <div class="flex justify-between items-center">
         <h1 class="text-2xl font-bold">User List</h1>
         <router-link to="/users/create">
@@ -16,36 +11,37 @@
           </button>
         </router-link>
       </div>
-
-      <!-- Search -->
       <input
         v-model="searchQuery"
         type="text"
         placeholder="Search roles..."
         class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring"
       />
-        <UserTable
-          :users="users"
-          :is-loading="isLoading"
-          :error="error"
-          :pagination="pagination"
-          v-model:current-page="currentPage"
-          @edit="editUser"
-          @delete="confirmDelete"
-        />
-      </main>
-  </div>
+      <UserTable
+        :users="users"
+        :is-loading="isLoading"
+        :error="error"
+        :pagination="pagination"
+        v-model:current-page="currentPage"
+        @delete="openDeleteModal"
+      />
+      <ConfirmDeleteUserModal
+        v-if="isDeleteModalOpen"
+        @cancel="isDeleteModalOpen = false"
+        @confirm="handleDelete"
+      />
+    </main>
+  </AdminLayout>
 </template>
   
-  <script setup>
+<script setup>
   import { ref, onMounted, watch } from 'vue'
-  import { getUsers } from '@/features/user/services/userService'
-  import Sidebar from '@/components/Sidebar.vue'
+  import { getUsers, deleteUser } from '@/features/user/services/userService'
+  import AdminLayout from '@/layouts/AdminLayout.vue'
   import UserTable from '@/features/user/components/UserTable.vue'
+  import ConfirmDeleteUserModal from '@/features/user/components/ConfirmDeleteUserModal.vue'
 
   const users = ref([])
-
-  const isEditModalOpen = ref(false)
 
   const isDeleteModalOpen = ref(false)
   const userToDelete = ref(null)
@@ -79,21 +75,19 @@
     }
   }
 
-  const editUser = async (user) => {
-    selectedRole.value = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    }
-
-    await fetchUsers()
-
-    isEditModalOpen.value = true
+  const openDeleteModal = (user) => {
+    userToDelete.value = user
+    isDeleteModalOpen.value = true
   }
 
-  const confirmDelete = (role) => {
-    userToDelete.value = role
-    isDeleteModalOpen.value = true
+  const handleDelete = async () => {
+    try {
+      await deleteUser(`${userToDelete.value.id}`)
+      isDeleteModalOpen.value = false
+      fetchUsers()
+    } catch (err) {
+      alert(err.response?.data?.message || err.message)
+    }
   }
 
   onMounted(fetchUsers)

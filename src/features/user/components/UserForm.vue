@@ -27,7 +27,7 @@
       <label class="block text-sm font-medium text-gray-700 mb-2">Organizations</label>
 
       <div v-if="organizations.length === 0" class="text-gray-500 text-sm">
-        Loading organizations...
+        No organizations found...
       </div>
 
       <div v-else class="grid gap-4">
@@ -60,9 +60,9 @@
               <option
                 v-for="role in roles"
                 :key="role.id"
-                :value="role.name"
+                :value="role.id"
               >
-                {{ role.name }}
+                {{ role.display_name }}
               </option>
             </select>
           </div>
@@ -83,64 +83,66 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed, watch } from 'vue'
-import { useUserForm } from '@/features/user/composables/useUserForm'
-import axiosUser from '@/lib/axiosUser'
+  import { onMounted, ref, computed, watch } from 'vue'
+  import { useUserForm } from '@/features/user/composables/useUserForm'
+  import axiosUser from '@/lib/axiosUser'
 
-const emit = defineEmits(['submit'])
-const props = defineProps({
-  modelValue: Object,
-})
-
-const isEditMode = computed(() => !!props.modelValue)
-const { form, resetForm, getPayload, isValid } = useUserForm()
-
-const organizations = ref([])
-const roles = ref([])
-
-const fetchOrganizations = async () => {
-  try {
-    const res = await axiosUser.get('/organizations')
-    organizations.value = res.data.data
-  } catch (err) {
-    console.error('Error fetching organizations:', err)
-  }
-}
-
-const fetchRoles = async () => {
-  try {
-    const res = await axiosUser.get('/roles')
-    roles.value = res.data.data
-  } catch (err) {
-    console.error('Error fetching roles:', err)
-  }
-}
-
-const fillFormFromModel = () => {
-  if (!props.modelValue) return
-  form.name = props.modelValue.name
-  form.email = props.modelValue.email
-  form.company_roles = props.modelValue.organizations?.map(c => c.company_id) || []
-  form.roles = {}
-  props.modelValue.organizations?.forEach(c => {
-    form.roles[c.company_id] = c.role
+  const emit = defineEmits(['submit', 'update:modelValue'])
+  const props = defineProps({
+    modelValue: {
+      type: Object,
+      default: () => ({})
+    },
+    readonly: {
+      type: Boolean,
+      default: false
+    }
   })
-}
 
-const onSubmit = () => {
-  if (!isValid()) {
-    alert('Please complete the form')
-    return
+  const isEditMode = computed(() => !!props.modelValue)
+  const { form, populate, getPayload, isValid } = useUserForm()
+
+  const organizations = ref([])
+  const roles = ref([])
+
+  const fetchOrganizations = async () => {
+    try {
+      const res = await axiosUser.get('/organizations')
+      organizations.value = res.data.data
+    } catch (err) {
+      console.error('Error fetching organizations:', err)
+    }
   }
-  emit('submit', getPayload())
-  resetForm()
-}
 
-onMounted(() => {
-  fetchOrganizations()
-  fetchRoles()
-  fillFormFromModel()
-})
+  const fetchRoles = async () => {
+    try {
+      const applicationId = import.meta.env.VITE_APPLICATION_ID
+      const res = await axiosUser.get('/roles', {
+        params: {
+          application_id: applicationId,
+          sort: 'display_name',
+          order: 'asc',
+          per_page: 100,
+        },
+      })
+      roles.value = res.data.data
+    } catch (err) {
+      console.error('Error fetching roles:', err)
+    }
+  }
 
-watch(() => props.modelValue, fillFormFromModel, { immediate: true })
+  const onSubmit = () => {
+    if (!isValid()) return alert('กรอกให้ครบก่อน')
+    const payload = getPayload()
+    emit('update:modelValue', payload)
+    emit('submit', payload)
+  }
+
+  onMounted(() => {
+    fetchOrganizations()
+    fetchRoles()
+    populate(props.modelValue)
+  })
+
+  watch(() => props.modelValue, (val) => populate(val), { immediate: true })
 </script>

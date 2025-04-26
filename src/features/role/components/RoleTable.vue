@@ -2,7 +2,7 @@
   <div class="space-y-4">
     <div v-if="props.isLoading" class="text-center py-10 text-gray-500">Loading roles...</div>
     <div v-else-if="props.error" class="text-center text-red-500">{{ error }}</div>
-    <div v-if="!props.isLoading && props.roles.length === 0" class="text-center py-8 text-gray-500">No roles found.</div>
+    <div v-else-if="!props.isLoading && props.roles.length === 0" class="text-center py-8 text-gray-500">No roles found.</div>
 
     <div v-else class="overflow-auto rounded-xl shadow border bg-white">
       <table class="min-w-full text-sm text-left">

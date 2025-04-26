@@ -2,7 +2,7 @@
   <div class="space-y-4">
     <div v-if="props.isLoading" class="text-center py-10 text-gray-500">Loading users...</div>
     <div v-else-if="props.error" class="text-center text-red-500">{{ error }}</div>
-    <div v-if="!props.isLoading && props.users.length === 0" class="text-center py-8 text-gray-500">No users found.</div>
+    <div v-else-if="!props.isLoading && props.users.length === 0" class="text-center py-8 text-gray-500">No users found.</div>
 
     <div v-else class="overflow-auto rounded-xl shadow border bg-white">
       <table class="min-w-full text-sm text-left">
@@ -23,15 +23,15 @@
             <td class="px-6 py-4 font-medium">{{ user.display_name }}</td>
 
             <td class="px-6 py-4 text-center space-x-2">
-              <button
+              <router-link
+                :to="`/users/${user.id}`"
                 class="text-blue-600 hover:underline text-sm"
-                @click="editUser(user)"
               >
-                Edit
-              </button>
+                View
+              </router-link>
               <button
                 class="text-red-600 hover:underline text-sm"
-                @click="confirmDelete(user)"
+                @click="onDelete(user)"
               >
                 Delete
               </button>
@@ -73,33 +73,29 @@
 
 <script setup>
 
-const editUser = (user) => {
-  emit('edit', user)
-}
-
-const confirmDelete = (user) => {
-  emit('delete', user)
-}
-
-const emit = defineEmits(['update:currentPage', 'edit', 'delete'])
-
-const goToPrev = () => {
-  if (props.pagination?.prev_page_url && props.currentPage > 1) {
-    emit('update:currentPage', props.currentPage - 1)
+  const onDelete = (user) => {
+    emit('delete', user)
   }
-}
 
-const goToNext = () => {
-  if (props.pagination?.next_page_url && props.currentPage < props.pagination.last_page) {
-    emit('update:currentPage', props.currentPage + 1)
+  const emit = defineEmits(['update:currentPage', 'edit', 'delete'])
+
+  const goToPrev = () => {
+    if (props.pagination?.prev_page_url && props.currentPage > 1) {
+      emit('update:currentPage', props.currentPage - 1)
+    }
   }
-}
 
-const props = defineProps({
-  users: Array,
-  isLoading: Boolean,
-  error: Object,
-  pagination: Object,
-  currentPage: Number
-})
+  const goToNext = () => {
+    if (props.pagination?.next_page_url && props.currentPage < props.pagination.last_page) {
+      emit('update:currentPage', props.currentPage + 1)
+    }
+  }
+
+  const props = defineProps({
+    users: Array,
+    isLoading: Boolean,
+    error: Object,
+    pagination: Object,
+    currentPage: Number
+  })
 </script>

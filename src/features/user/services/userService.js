@@ -4,7 +4,7 @@ export const getUsers = (params) => {
   return axiosUser.get('/users', { params })
 }
 
-export const getUserById = (id) => {
+export const getUser = (id) => {
   return axiosUser.get(`/users/${id}`)
 }
 
