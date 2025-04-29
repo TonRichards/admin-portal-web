@@ -1,4 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useOrganizationStore } from '@/stores/organizationStore'
+import RequireOrgModal from '@/components/RequireOrgModal.vue'
+import { createVNode, render } from 'vue'
+
 import LandingPage from '@/features/landing/pages/LandingPage.vue'
 import LoginPage from '@/features/auth/pages/LoginPage.vue'
 import RegisterPage from '@/features/auth/pages/RegisterPage.vue'
@@ -14,9 +18,9 @@ import PermissionsPage from '@/features/permission/pages/PermissionsPage.vue'
 import OrganizationsPage from '@/features/organization/pages/OrganizationsPage.vue'
 
 const routes = [
-  { path: '/', component: LandingPage },
-  { path: '/login', component: LoginPage },
-  { path: '/register', component: RegisterPage },
+  { path: '/', component: LandingPage, meta: { public: true }},
+  { path: '/login', component: LoginPage, meta: { public: true }},
+  { path: '/register', component: RegisterPage, meta: { public: true }},
   // Admin pages
   { path: '/dashboard', component: DashboardPage },
   { path: '/projects', component: ProjectsPage },
@@ -28,10 +32,44 @@ const routes = [
   { path: '/users/:id', component: UserDetailPage },
   { path: '/roles', component: RolesPage },
   { path: '/permissions', component: PermissionsPage },
-  { path: '/organizations', component: OrganizationsPage },
+  { path: '/organizations', component: OrganizationsPage, meta: { public: true }},
 ]
 
 export const router = createRouter({
   history: createWebHistory(),
   routes,
 })
+
+let modalVm = null
+
+router.beforeEach(async (to, from) => {
+  if (to.meta.public) return true
+
+  const orgStore = useOrganizationStore()
+  await orgStore.init()
+
+  if (!orgStore.currentOrgId) {
+    if (!modalVm) {
+      const container = document.createElement('div')
+      document.body.appendChild(container)
+
+      const vnode = createVNode(RequireOrgModal, {
+        onCancel: () => {
+          render(null, container)
+          modalVm = null
+        },
+        onCreate: () => {
+          render(null, container)
+          modalVm = null
+          router.push('/organizations')
+        },
+      })
+
+      render(vnode, container)
+      modalVm = vnode
+    }
+  }
+
+  return true
+})
+
