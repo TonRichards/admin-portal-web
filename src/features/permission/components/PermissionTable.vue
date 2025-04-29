@@ -11,7 +11,7 @@
             <th class="px-4 py-2">Name</th>
             <th class="px-4 py-2">Display Name</th>
             <th class="px-4 py-2">Description</th>
-            <th class="px-4 py-2">Action</th>
+            <!-- <th class="px-4 py-2">Action</th> -->
           </tr>
         </thead>
         <tbody>
@@ -21,11 +21,11 @@
             class="border-t hover:bg-gray-50"
           >
             <td class="px-4 py-2">{{ permission.name }}</td>
-            <td class="px-4 py-2">{{ permission.label_en }}</td>
-            <td class="px-4 py-2">{{ permission.description_en }}</td>
+            <td class="px-4 py-2">{{ permission.label_th }}</td>
+            <td class="px-4 py-2">{{ permission.description_th }}</td>
             <td class="px-4 py-2 space-x-2">
-              <button @click="editPermission(permission)" class="text-blue-600 hover:underline">Edit</button>
-              <button @click="confirmDelete(permission)" class="text-red-600 hover:underline">Delete</button>
+              <!-- <button @click="editPermission(permission)" class="text-blue-600 hover:underline">Edit</button>
+              <button @click="confirmDelete(permission)" class="text-red-600 hover:underline">Delete</button> -->
             </td>
           </tr>
         </tbody>
