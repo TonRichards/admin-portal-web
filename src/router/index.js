@@ -46,12 +46,12 @@ export const router = createRouter({
 let modalVm = null
 
 router.beforeEach(async (to, from) => {
-  if (to.meta.public) return true
+  const isPublic = to.meta.public
 
   const orgStore = useOrganizationStore()
   const user = await checkAuth()
 
-  if (!user) {
+  if (!user && !isPublic) {
     if (!modalVm) {
       const container = document.createElement('div')
       document.body.appendChild(container)
@@ -74,27 +74,29 @@ router.beforeEach(async (to, from) => {
     }
   }
 
-  await orgStore.init()
+  if (user) {
+    await orgStore.init()
 
-  if (!orgStore.currentOrgId) {
-    if (!modalVm) {
-      const container = document.createElement('div')
-      document.body.appendChild(container)
+    if (!orgStore.currentOrgId && !isPublic) {
+      if (!modalVm) {
+        const container = document.createElement('div')
+        document.body.appendChild(container)
 
-      const vnode = createVNode(RequireOrgModal, {
-        onCancel: () => {
-          render(null, container)
-          modalVm = null
-        },
-        onCreate: () => {
-          render(null, container)
-          modalVm = null
-          router.push('/organizations')
-        },
-      })
+        const vnode = createVNode(RequireOrgModal, {
+          onCancel: () => {
+            render(null, container)
+            modalVm = null
+          },
+          onCreate: () => {
+            render(null, container)
+            modalVm = null
+            router.push('/organizations')
+          },
+        })
 
-      render(vnode, container)
-      modalVm = vnode
+        render(vnode, container)
+        modalVm = vnode
+      }
     }
   }
 

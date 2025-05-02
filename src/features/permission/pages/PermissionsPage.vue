@@ -121,9 +121,9 @@ const updatePermission = async (payload) => {
   }
 }
 
-const openAddModal = () => {
-  isAddModalOpen.value = true
-}
+// const openAddModal = () => {
+//   isAddModalOpen.value = true
+// }
 
 const editPermission = (permission) => {
   permissionToEdit.value = permission

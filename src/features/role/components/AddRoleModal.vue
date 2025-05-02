@@ -37,7 +37,7 @@
                 :value="permission.name"
                 v-model="form.permission_names"
               />
-              <span>{{ permission.label_en }}</span>
+              <span>{{ permission.label_en }}  ({{ permission.name }})</span>
             </label>
           </div>
         </div>

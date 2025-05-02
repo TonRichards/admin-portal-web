@@ -53,6 +53,7 @@
 </template>
 
 <script setup>
+  import { createRoleService, updateRoleService, deleteRoleService } from '@/features/role/services/roleService'
   import { ref, onMounted, watch } from 'vue'
   import axiosUser from '@/lib/axiosUser'
   import AdminLayout from '@/layouts/AdminLayout.vue'
@@ -104,8 +105,8 @@
   }
 
   const fetchAllPermissions = async () => {
-  const res = await axiosUser.get('/permissions?per_page=100')
-    allPermissions.value = res.data.data
+  const res = await axiosUser.get('/select/option/permissions')
+    allPermissions.value = res.data.data.data
   }
 
   const openAddModal = () => {
@@ -133,7 +134,7 @@
 
   const saveNewRole = async (payload) => {
     try {
-      await axiosUser.post('/roles', payload)
+      await createRoleService(payload)
       isAddModalOpen.value = false
       fetchRoles()
     } catch (err) {
@@ -143,7 +144,7 @@
 
   const updateRole = async (payload) => {
     try {
-      await axiosUser.put(`/roles/${payload.id}`, {
+      await updateRoleService(payload.id, {
         name: payload.name,
         display_name: payload.display_name,
         permission_names: payload.permission_names,
@@ -157,7 +158,7 @@
 
   const deleteRole = async () => {
     try {
-      await axiosUser.delete(`/roles/${roleToDelete.value.id}`)
+      await deleteRoleService(roleToDelete.value.id)
       isDeleteModalOpen.value = false
       fetchRoles()
     } catch (err) {
