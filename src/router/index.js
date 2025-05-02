@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useOrganizationStore } from '@/stores/organizationStore'
 import RequireOrgModal from '@/components/RequireOrgModal.vue'
+import RequireLoginModal from '@/components/RequireLoginModal.vue'
 import { createVNode, render } from 'vue'
 
 import LandingPage from '@/features/landing/pages/LandingPage.vue'
@@ -16,6 +17,8 @@ import UserDetailPage from '@/features/user/pages/UserDetailPage.vue'
 import RolesPage from '@/features/role/pages/RolesPage.vue'
 import PermissionsPage from '@/features/permission/pages/PermissionsPage.vue'
 import OrganizationsPage from '@/features/organization/pages/OrganizationsPage.vue'
+
+import { checkAuth } from '@/lib/axiosUser'
 
 const routes = [
   { path: '/', component: LandingPage, meta: { public: true }},
@@ -46,6 +49,31 @@ router.beforeEach(async (to, from) => {
   if (to.meta.public) return true
 
   const orgStore = useOrganizationStore()
+  const user = await checkAuth()
+
+  if (!user) {
+    if (!modalVm) {
+      const container = document.createElement('div')
+      document.body.appendChild(container)
+
+      const vnode = createVNode(RequireLoginModal, {
+        onLogin: () => {
+          render(null, container)
+          modalVm = null
+          router.push('/login')
+        },
+        onRegister: () => {
+          render(null, container)
+          modalVm = null
+          router.push('/register')
+        },
+      })
+
+      render(vnode, container)
+      modalVm = vnode
+    }
+  }
+
   await orgStore.init()
 
   if (!orgStore.currentOrgId) {

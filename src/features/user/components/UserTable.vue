@@ -10,7 +10,6 @@
           <tr>
             <th class="px-6 py-3">ชื่อ</th>
             <th class="px-6 py-3">อีเมล์</th>
-            <th class="px-6 py-3 text-center">บริษัท</th>
             <th class="px-6 py-3 text-center">สิทธิ์</th>
             <th class="px-6 py-3 text-center">การจัดการ</th>
           </tr>
@@ -19,8 +18,17 @@
           <tr v-for="user in props.users" :key="user.id" class="border-t hover:bg-gray-50">
             <td class="px-6 py-4 font-medium">{{ user.name }}</td>
             <td class="px-6 py-4 font-medium">{{ user.email }}</td>
-            <td class="px-6 py-4 font-medium">{{ user.display_name }}</td>
-            <td class="px-6 py-4 font-medium">{{ user.display_name }}</td>
+            <td class="px-6 py-4 font-medium">
+              <div class="flex flex-wrap gap-2">
+                <span
+                  v-for="organization in user.organizations"
+                  :key="organization.id"
+                  class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
+                >
+                  {{ organization.name }}
+                </span>
+              </div>
+            </td>
 
             <td class="px-6 py-4 text-center space-x-2">
               <router-link

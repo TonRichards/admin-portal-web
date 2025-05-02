@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import axiosUser from '@/lib/axiosUser'
+import { router } from '../router'
 
 export const useOrganizationStore = defineStore('org', {
   state: () => ({
@@ -34,6 +35,7 @@ export const useOrganizationStore = defineStore('org', {
           organization_id: newOrgId,
         })
         this.currentOrgId = newOrgId
+        window.location.reload()
       } catch (error) {
         console.error('Switch organization failed', error)
       }

@@ -14,6 +14,7 @@
   import { createUser } from '@/features/user/services/userService'
   import { useRouter } from 'vue-router'
   import AdminLayout from '@/layouts/AdminLayout.vue'
+  import { ref } from 'vue'
 
   const router = useRouter()
 
@@ -22,7 +23,6 @@
   const handleSubmit = async (payload) => {
     try {
       await createUser(payload)
-      formRef.value.resetForm()
       router.push('/users')
     } catch (err) {
       console.error('Create user failed:', err)

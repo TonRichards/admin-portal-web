@@ -13,14 +13,14 @@ instance.interceptors.request.use((config) => {
   return config
 })
 
-// instance.interceptors.response.use(
-//   response => response,
-//   error => {
-//     if (error.response && error.response.status === 401) {
-//       window.location.href = '/login'
-//     }
-//     return Promise.reject(error)
-//   }
-// )
+export const checkAuth = async () => {
+  try {
+    const res = await instance.get('/auth/check')
+    return res.data?.data || null
+  } catch (err) {
+    // ถ้า status = 401 หรือ error ใด ๆ ให้ถือว่ายังไม่ login
+    return null
+  }
+}
 
 export default instance
