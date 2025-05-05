@@ -19,6 +19,8 @@ export function useUserForm() {
     return {
       name: form.name,
       email: form.email,
+      password: form.password,
+      password_confirmation: form.password_confirmation,
       organizations: form.organization_roles.map((organization_id) => ({
         organization_id,
         role: form.roles[organization_id] || ''

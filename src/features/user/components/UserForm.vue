@@ -7,22 +7,24 @@
         v-model="form.email"
         type="email"
         required
+        @focus="showResults = true"
+        @blur="handleBlur"
         class="mt-1 block w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring"
       />
       <ul
-        v-if="searchResults.length > 0"
+        v-if="showResults && searchResults.length > 0"
         class="absolute z-10 w-full bg-white border mt-1 rounded-xl shadow max-h-40 overflow-auto"
       >
         <li
           v-for="user in searchResults"
           :key="user.id"
-          @click="selectUser(user)"
+          @mousedown.prevent="selectUser(user)"
           class="px-4 py-2 hover:bg-blue-100 cursor-pointer text-sm"
         >
           {{ user.email }} <span class="text-gray-400">({{ user.name }})</span>
         </li>
       </ul>
-    </div>
+  </div>
 
     <!-- Name -->
     <div>
@@ -31,7 +33,28 @@
         v-model="form.name"
         type="text"
         required
-        :readonly="!!selectedUser"
+        class="mt-1 block w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring"
+      />
+    </div>
+
+    <!-- Password -->
+    <div v-if="!selectedUser">
+      <label class="block text-sm font-medium text-gray-700">Password</label>
+      <input
+        v-model="form.password"
+        type="password"
+        required
+        class="mt-1 block w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring"
+      />
+    </div>
+
+    <!-- Confirm Password -->
+    <div v-if="!selectedUser">
+      <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
+      <input
+        v-model="form.password_confirmation"
+        type="password"
+        required
         class="mt-1 block w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring"
       />
     </div>
@@ -72,7 +95,7 @@
             >
               <option value="">Select Role</option>
               <option
-                v-for="role in roles"
+                v-for="role in roles.filter(r => r.organization_id === organization.id)"
                 :key="role.id"
                 :value="role.id"
               >
@@ -101,10 +124,9 @@
   import { useUserForm } from '@/features/user/composables/useUserForm'
   import axiosUser from '@/lib/axiosUser'
 
-  const searchQuery = ref('')
+  const showResults = ref(false)
   const searchResults = ref([])
   const selectedUser = ref(null)
-
 
   const emit = defineEmits(['submit', 'update:modelValue'])
   const props = defineProps({
@@ -117,6 +139,12 @@
       default: false
     }
   })
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      showResults.value = false
+    }, 150)
+  }
 
   const isEditMode = computed(() => typeof props.modelValue?.id === 'string' && props.modelValue.id.length > 5)
   const { form, populate, getPayload, isValid } = useUserForm()
@@ -181,5 +209,6 @@
     form.name = user.name
     selectedUser.value = user
     searchResults.value = []
+    showResults.value = false
   }
 </script>

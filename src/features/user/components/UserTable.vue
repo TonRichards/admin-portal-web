@@ -20,12 +20,8 @@
             <td class="px-6 py-4 font-medium">{{ user.email }}</td>
             <td class="px-6 py-4 font-medium">
               <div class="flex flex-wrap gap-2">
-                <span
-                  v-for="organization in user.organizations"
-                  :key="organization.id"
-                  class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
-                >
-                  {{ organization.name }}
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                  {{ user.current_role.display_name }}
                 </span>
               </div>
             </td>
