@@ -2,7 +2,7 @@ FROM node:18.19.0-alpine
 
 WORKDIR /app
 
-RUN apk add --no-cache git
+RUN apk add --no-cache git openssh
 
 COPY package.json package-lock.json* ./
 
