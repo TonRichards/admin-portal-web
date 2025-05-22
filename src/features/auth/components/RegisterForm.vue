@@ -63,6 +63,7 @@
         email: email.value,
         password: password.value,
         password_confirmation: password_confirmation.value,
+        application_id: import.meta.env.VITE_APPLICATION_ID,
       })
   
       const token = response.data.data.access_token
