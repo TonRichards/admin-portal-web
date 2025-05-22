@@ -31,7 +31,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           source: "dist/*"
-          target: "/home/ubuntu/admin-portal-web"
+          target: "/home/ubuntu/erawan/admin-portal-web"
       
       - name: Copy dist into docker container
         uses: appleboy/ssh-action@v1.0.0
@@ -40,5 +40,4 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            docker cp /home/ubuntu/erawan/admin-portal-web/. admin_portal_web:/usr/share/nginx/html
-            docker exec admin_portal_web nginx -s reload
+            docker cp /home/ubuntu/erawan/admin-portal-web/. admin_portal_web:/app/dist
