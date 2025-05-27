@@ -1,10 +1,17 @@
 # --- Build Stage ---
-FROM node:18-alpine as builder
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+
+ARG VITE_API_URL
+ARG VITE_APPLICATION_ID
+
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_APPLICATION_ID=$VITE_APPLICATION_ID
+
 RUN npm run build
 
 # --- Serve with Nginx ---
