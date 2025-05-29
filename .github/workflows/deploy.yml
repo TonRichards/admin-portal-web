@@ -33,8 +33,9 @@ jobs:
           script: |
             set -e
             echo "📂 Clearing old dist directory..."
-            rm -rf /home/ubuntu/erawan/admin-portal-web/*
-            mkdir -p /home/ubuntu/erawan/admin-portal-web
+            rm -rf /root/eraton.co/admin-portal-web/*
+            mkdir -p /root/eraton.co/admin-portal-web
+
 
       - name: 🚀 Upload dist to server
         uses: appleboy/scp-action@v0.1.3
@@ -42,8 +43,8 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: "dist/*"
-          target: "/home/ubuntu/erawan/admin-portal-web"
+          source: "dist"  # ✅ copy ทั้งโฟลเดอร์ dist
+          target: "/root/eraton.co/admin-portal-web"
 
       - name: 🐳 Copy dist into Docker container
         uses: appleboy/ssh-action@v1.0.0
@@ -56,5 +57,5 @@ jobs:
             echo "🔎 Checking container..."
             docker ps | grep admin_portal_web
             echo "📦 Copying dist files into container..."
-            docker cp /home/ubuntu/erawan/admin-portal-web/. admin_portal_web:/app/dist
+            docker cp /root/eraton.co/admin-portal-web/dist/. admin_portal_web:/app/dist
             echo "✅ Deployment complete!"
