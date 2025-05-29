@@ -58,7 +58,7 @@
     error.value = ''
     loading.value = true
     try {
-      const response = await axios.post(import.meta.env.VITE_API_URL+'/auth/register', {
+      const response = await axios.post(import.meta.env.VITE_API_URL+'/api/clients/auth/register', {
         name: name.value,
         email: email.value,
         password: password.value,

@@ -42,7 +42,7 @@ const handleLogin = async () => {
   error.value = ''
   loading.value = true
   try {
-    const response = await axios.post(import.meta.env.VITE_API_URL+'/auth/login', {
+    const response = await axios.post(import.meta.env.VITE_API_URL+'/api/clients/auth/login', {
       email: email.value,
       password: password.value,
     })

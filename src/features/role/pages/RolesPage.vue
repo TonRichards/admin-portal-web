@@ -86,7 +86,7 @@
       isLoading.value = true
 
       const applicationId = import.meta.env.VITE_APPLICATION_ID
-      const response = await axiosUser.get('/roles', {
+      const response = await axiosUser.get('/api/clients/roles', {
         params: {
           application_id: applicationId,
           page: currentPage.value,
@@ -105,7 +105,7 @@
   }
 
   const fetchAllPermissions = async () => {
-  const res = await axiosUser.get('/select/option/permissions')
+  const res = await axiosUser.get('/api/select/option/permissions')
     allPermissions.value = res.data.data.data
   }
 

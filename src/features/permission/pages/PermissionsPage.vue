@@ -80,7 +80,7 @@ const error = ref(null)
 const fetchPermissions = async () => {
   try {
     isLoading.value = true
-    const res = await axiosUser.get('/permissions', {
+    const res = await axiosUser.get('/api/clients/permissions', {
       params: {
         page: currentPage.value,
         q: searchQuery.value,
@@ -97,7 +97,7 @@ const fetchPermissions = async () => {
 
 const savePermission = async (payload) => {
   try {
-    await axiosUser.post('/permissions', payload)
+    await axiosUser.post('/api/clients/permissions', payload)
     isAddModalOpen.value = false
     fetchPermissions()
   } catch (err) {
@@ -107,7 +107,7 @@ const savePermission = async (payload) => {
 
 const updatePermission = async (payload) => {
   try {
-    await axiosUser.put(`/permissions/${payload.id}`, {
+    await axiosUser.put(`/api/clients/permissions/${payload.id}`, {
       name: payload.name,
       label_en: payload.label_en,
       label_th: payload.label_th,
@@ -136,7 +136,7 @@ const confirmDelete = (permission) => {
 }
 
 const deletePermission = async () => {
-  await axiosUser.delete(`/permissions/${permissionToDelete.value.id}`)
+  await axiosUser.delete(`/api/clients/permissions/${permissionToDelete.value.id}`)
   isDeleteModalOpen.value = false
   fetchPermissions()
 }
