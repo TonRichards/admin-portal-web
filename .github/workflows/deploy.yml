@@ -3,28 +3,40 @@ name: Deploy Admin Portal Web
 on:
   push:
     branches:
-      - qa
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: 📥 Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install dependencies
+      - name: 📦 Install dependencies
         run: npm install
 
-      - name: Build project
+      - name: 🏗️ Build project
         run: npm run build
 
-      - name: Upload dist to server
+      - name: 🧹 Clear old files on server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            echo "📂 Clearing old dist directory..."
+            rm -rf /home/ubuntu/erawan/admin-portal-web/*
+            mkdir -p /home/ubuntu/erawan/admin-portal-web
+
+      - name: 🚀 Upload dist to server
         uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -32,12 +44,17 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           source: "dist/*"
           target: "/home/ubuntu/erawan/admin-portal-web"
-      
-      - name: Copy dist into docker container
+
+      - name: 🐳 Copy dist into Docker container
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            set -e
+            echo "🔎 Checking container..."
+            docker ps | grep admin_portal_web
+            echo "📦 Copying dist files into container..."
             docker cp /home/ubuntu/erawan/admin-portal-web/. admin_portal_web:/app/dist
+            echo "✅ Deployment complete!"
