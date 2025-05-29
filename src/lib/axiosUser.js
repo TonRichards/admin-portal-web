@@ -15,7 +15,7 @@ instance.interceptors.request.use((config) => {
 
 export const checkAuth = async () => {
   try {
-    const res = await instance.get('/auth/check')
+    const res = await instance.get('/api/clients/auth/check')
     return res.data?.data || null
   } catch (err) {
     // ถ้า status = 401 หรือ error ใด ๆ ให้ถือว่ายังไม่ login

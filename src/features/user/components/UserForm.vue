@@ -154,7 +154,7 @@
 
   const fetchOrganizations = async () => {
     try {
-      const res = await axiosUser.get('/select/option/organizations')
+      const res = await axiosUser.get('/api/select/option/organizations')
       organizations.value = res.data.data.data
     } catch (err) {
       console.error('Error fetching organizations:', err)
@@ -164,7 +164,7 @@
   const fetchRoles = async () => {
     try {
       const applicationId = import.meta.env.VITE_APPLICATION_ID
-      const res = await axiosUser.get('/select/option/roles', {
+      const res = await axiosUser.get('/api/select/option/roles', {
         params: {
           application_id: applicationId
         },
@@ -196,7 +196,7 @@
     }
 
     try {
-      const res = await axiosUser.get('/select/option/users', { params: { q: val } })
+      const res = await axiosUser.get('/api/select/option/users', { params: { q: val } })
       searchResults.value = res.data.data.data
     } catch (err) {
       console.error('Search error:', err)
