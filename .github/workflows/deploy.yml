@@ -38,8 +38,8 @@ jobs:
           script: |
             set -e
             echo "📂 Clearing old dist directory..."
-            rm -rf /root/eraton.co/admin-portal-web/*
-            mkdir -p /root/eraton.co/admin-portal-web
+            rm -rf /root/eraton.co/admin-portal-web/dist
+            mkdir -p /root/eraton.co/admin-portal-web/dist
 
       - name: 🚀 Upload dist to server
         uses: appleboy/scp-action@v0.1.3
