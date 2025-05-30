@@ -1,4 +1,4 @@
-name: Deploy Admin Portal Web
+name: Deploy Admin Portal Web (Docker CI/CD)
 
 on:
   push:
@@ -18,39 +18,28 @@ jobs:
         with:
           node-version: '18'
 
-      - name: ✍️ Generate .env file from GitHub Secrets
-        run: |
-          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
-          echo "VITE_APPLICATION_ID=${{ secrets.VITE_APPLICATION_ID }}" >> .env
-
       - name: 📦 Install dependencies
         run: npm install
 
       - name: 🏗️ Build project
         run: npm run build
 
-      - name: 🧹 Clear old files on server
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            set -e
-            echo "📂 Clearing old dist directory..."
-            rm -rf /root/eraton.co/admin-portal-web/dist
-            mkdir -p /root/eraton.co/admin-portal-web/dist
+      - name: 🐳 Build Docker image
+        run: docker build -t admin_portal_web .
 
-      - name: 🚀 Upload dist to server
+      - name: 📦 Save Docker image as .tar
+        run: docker save -o admin_portal_web.tar admin_portal_web
+
+      - name: 🚀 Upload image to server
         uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: "dist"  # ✅ copy ทั้งโฟลเดอร์ dist
-          target: "/root/eraton.co/admin-portal-web"
+          source: "admin_portal_web.tar"
+          target: "/root/"
 
-      - name: 🐳 Copy dist into Docker container
+      - name: 🐳 Load and run container on server
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -58,8 +47,21 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             set -e
-            echo "🔎 Checking container..."
-            docker ps | grep admin_portal_web
-            echo "📦 Copying dist files into container..."
-            docker cp /root/eraton.co/admin-portal-web/dist/. admin_portal_web:/app/dist
-            echo "✅ Deployment complete!"
+
+            echo "🛑 Stopping previous container (if exists)..."
+            docker stop admin_portal_web || true
+            docker rm admin_portal_web || true
+
+            echo "📦 Loading new Docker image..."
+            docker load -i /root/admin_portal_web.tar
+
+            echo "🔌 Ensure Docker network 'app_network' exists..."
+            docker network create app_network || true
+
+            echo "🚀 Running new container (no public port exposed)..."
+            docker run -d \
+              --name admin_portal_web \
+              --network app_network \
+              admin_portal_web
+
+            echo "✅ Deployment complete (internal-only)!"
