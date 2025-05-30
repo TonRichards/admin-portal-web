@@ -48,8 +48,10 @@ const handleLogin = async () => {
     })
 
     const token = response.data.data.access_token
+    const user = response.data.data.user
 
     localStorage.setItem('token', token)
+    localStorage.setItem('user', JSON.stringify(user))
     router.push('/dashboard')
   } catch (err) {
     error.value = 'Invalid credentials'
