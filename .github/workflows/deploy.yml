@@ -19,14 +19,17 @@ jobs:
           node-version: '18'
 
       - name: ✍️ Generate .env file for production build
+        working-directory: ./admin-portal-web
         run: |
           echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
           echo "VITE_APPLICATION_ID=${{ secrets.VITE_APPLICATION_ID }}" >> .env
 
       - name: 📦 Install dependencies
+        working-directory: ./admin-portal-web
         run: npm install
 
       - name: 🏗️ Build project
+        working-directory: ./admin-portal-web
         run: npm run build
 
       - name: 🐳 Build Docker image
