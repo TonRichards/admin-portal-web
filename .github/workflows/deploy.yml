@@ -18,6 +18,11 @@ jobs:
         with:
           node-version: '18'
 
+      - name: ✍️ Generate .env file for production build
+        run: |
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
+          echo "VITE_APPLICATION_ID=${{ secrets.VITE_APPLICATION_ID }}" >> .env
+
       - name: 📦 Install dependencies
         run: npm install
 
