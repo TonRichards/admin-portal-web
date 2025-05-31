@@ -61,7 +61,7 @@ jobs:
             echo "🚀 Running new container (no public port exposed)..."
             docker run -d \
               --name admin_portal_web \
-              --network app_network \
+              --network eratonco_app_network \
               admin_portal_web
 
             echo "✅ Deployment complete (internal-only)!"
