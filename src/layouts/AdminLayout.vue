@@ -60,9 +60,12 @@ import { useAuthStore } from '@/stores/auth'
 import Sidebar from '@/components/Sidebar.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { useLogout } from '@/features/auth/composables/useLogout'
 
 const auth = useAuthStore()
 const user = computed(() => auth.user)
+
+const { logout } = useLogout()
 
 const route = useRoute()
 const router = useRouter()
@@ -73,11 +76,6 @@ const pageTitle = computed(() => {
   const path = route.path.replace('/', '').split('/')[0]
   return path.charAt(0).toUpperCase() + path.slice(1)
 })
-
-function logout() {
-  // สามารถเพิ่มการล้าง token หรือเรียก API ได้ที่นี่
-  router.push('/login')
-}
 
 function handleClickOutside(event) {
   if (!event.target.closest('.relative')) {
