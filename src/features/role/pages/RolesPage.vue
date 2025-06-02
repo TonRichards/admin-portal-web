@@ -86,6 +86,7 @@
       isLoading.value = true
 
       const applicationId = import.meta.env.VITE_APPLICATION_ID
+      console.log("ENV applicationId:", applicationId)
       const response = await axiosUser.get('/api/clients/roles', {
         params: {
           application_id: applicationId,
