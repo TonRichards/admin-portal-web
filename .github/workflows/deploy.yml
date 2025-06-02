@@ -45,13 +45,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           source: "admin_portal_web.tar"
           target: "/root/"
-
-      - name: 🐳 Load and run container on server
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
           script: |
             set -e
 
@@ -68,7 +61,7 @@ jobs:
             echo "🚀 Running new container (no public port exposed)..."
             docker run -d \
               --name admin_portal_web \
-              --network eratonco_app_network \
+              --network app_network \
               admin_portal_web
 
-            echo "✅ Deployment complete (internal-only)!"
+            echo "✅ Deployment complete!"
