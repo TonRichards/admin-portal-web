@@ -37,6 +37,9 @@ jobs:
           ls -lart
           ls -lart dist || echo "no dist yet"
 
+      - name: 🐞 List dist content
+        run: ls -l dist && cat dist/index.html | head -n 20
+
       - name: 🐳 Build Docker image
         run: docker build -f Dockerfile.production -t admin_portal_web .
 
@@ -51,6 +54,13 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           source: "admin_portal_web.tar"
           target: "/root/"
+
+      - name: 🐳 Load and run container on server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
           script: |
             set -e
 
