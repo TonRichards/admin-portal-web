@@ -26,15 +26,18 @@ jobs:
           cat .env
 
       - name: 📦 Install dependencies
-        working-directory: ./admin-portal-web
         run: npm install
 
       - name: 🏗️ Build project
-        working-directory: ./admin-portal-web
         run: npm run build
 
+      - name: 🐞 Debug dist folder
+        run: |
+          pwd
+          ls -lart
+          ls -lart dist || echo "no dist yet"
+
       - name: 🐳 Build Docker image
-        working-directory: ./admin-portal-web
         run: docker build -f Dockerfile.production -t admin_portal_web .
 
       - name: 📦 Save Docker image as .tar
