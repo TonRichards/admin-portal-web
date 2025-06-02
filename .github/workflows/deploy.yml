@@ -22,7 +22,7 @@ jobs:
         run: |
           echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
           echo "VITE_APPLICATION_ID=${{ secrets.VITE_APPLICATION_ID }}" >> .env
-          echo "DEBUG: VITE_APPLICATION_ID=$VITE_APPLICATION_ID"
+          echo "DEBUG: VITE_APPLICATION_ID=${{ secrets.VITE_APPLICATION_ID }}"
           cat .env
 
       - name: 📦 Install dependencies
