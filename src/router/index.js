@@ -4,19 +4,17 @@ import RequireOrgModal from '@/components/RequireOrgModal.vue'
 import RequireLoginModal from '@/components/RequireLoginModal.vue'
 import { createVNode, render } from 'vue'
 
-import LandingPage from '@/features/landing/pages/LandingPage.vue'
-import LoginPage from '@/features/auth/pages/LoginPage.vue'
-import RegisterPage from '@/features/auth/pages/RegisterPage.vue'
-import DashboardPage from '@/features/dashboard/pages/DashboardPage.vue'
-import ProjectsPage from '@/features/project/pages/ProjectsPage.vue'
-import OrdersPage from '@/features/order/pages/OrdersPage.vue'
-import ShippingsPage from '@/features/shipping/pages/ShippingsPage.vue'
-import UsersPage from '@/features/user/pages/UsersPage.vue'
-import UserCreatePage from '@/features/user/pages/UserCreatePage.vue'
-import UserDetailPage from '@/features/user/pages/UserDetailPage.vue'
-import RolesPage from '@/features/role/pages/RolesPage.vue'
-import PermissionsPage from '@/features/permission/pages/PermissionsPage.vue'
-import OrganizationsPage from '@/features/organization/pages/OrganizationsPage.vue'
+import LandingPage from '@/pages/landing/LandingPage.vue'
+import LoginPage from '@/pages/auth/LoginPage.vue'
+import RegisterPage from '@/pages/auth/RegisterPage.vue'
+import DashboardPage from '@/pages/dashboard/DashboardPage.vue'
+import OrdersPage from '@/pages/order/OrdersPage.vue'
+import UsersPage from '@/pages/user/UsersPage.vue'
+import UserCreatePage from '@/pages/user/UserCreatePage.vue'
+import UserDetailPage from '@/pages/user/UserDetailPage.vue'
+import RolesPage from '@/pages/role/RolesPage.vue'
+import PermissionsPage from '@/pages/permission/PermissionsPage.vue'
+import OrganizationsPage from '@/pages/organization/OrganizationsPage.vue'
 
 import { checkAuth } from '@/lib/axiosUser'
 
@@ -26,9 +24,7 @@ const routes = [
   { path: '/register', component: RegisterPage, meta: { public: true }},
   // Admin pages
   { path: '/dashboard', component: DashboardPage },
-  { path: '/projects', component: ProjectsPage },
   { path: '/orders', component: OrdersPage },
-  { path: '/shippings', component: ShippingsPage },
   // Admin settings
   { path: '/users', component: UsersPage },
   { path: '/users/create', component: UserCreatePage },

@@ -60,7 +60,7 @@ import { useAuthStore } from '@/stores/auth'
 import Sidebar from '@/components/Sidebar.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
-import { useLogout } from '@/features/auth/composables/useLogout'
+import { useLogout } from '@/composables/auth/useLogout'
 
 const auth = useAuthStore()
 const user = computed(() => auth.user)
