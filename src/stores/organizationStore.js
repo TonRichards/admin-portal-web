@@ -19,7 +19,7 @@ export const useOrganizationStore = defineStore('org', {
       if (this.triedInit) return
       this.triedInit = true
 
-      const res = await axiosUser.get('/api/clients/auth/check')
+      const res = await axiosUser.get('/api/auth/check')
       const user = res.data.data
 
       this.list = user.organizations || []
@@ -30,7 +30,7 @@ export const useOrganizationStore = defineStore('org', {
     },
     async switchOrganization(newOrgId) {
       try {
-        await axiosUser.post('/api/clients/auth/switch-organization', {
+        await axiosUser.post('/api/auth/switch-organization', {
           organization_id: newOrgId,
         })
         this.currentOrgId = newOrgId

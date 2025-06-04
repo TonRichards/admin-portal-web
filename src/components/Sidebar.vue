@@ -31,7 +31,7 @@
     <nav class="flex-1 p-4 space-y-2 text-sm">
       <SidebarItem :icon="ViewDashboardOutlineIcon" label="Dashboard" to="/dashboard" />
       <SidebarItem :icon="ReceiptOutlineIcon" label="Orders" to="/orders" />
-      <SidebarItem :icon="TruckOutlineIcon" label="Shipping" to="/shippings" />
+      <SidebarItem :icon="TruckOutlineIcon" label="Inventory" to="#" />
 
       <SidebarCollapseItem
         :icon="CogOutlineIcon"
