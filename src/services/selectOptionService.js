@@ -16,9 +16,11 @@ export const permissionSelectOptions = () => {
   return axiosUser.get(`/api/select/option/permissions`)
 }
 
-export const userSelectOptions = (params) => {
+export const userSelectOptions = ({ params }) => {
   return axiosUser.get(`/api/select/option/users`, {
-    ... params
+    params: {
+      ...params,
+    },
   })
 }
 
