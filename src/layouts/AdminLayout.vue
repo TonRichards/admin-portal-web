@@ -56,7 +56,7 @@
 
 <script setup>
 
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/authStore'
 import Sidebar from '@/components/Sidebar.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
@@ -68,7 +68,6 @@ const user = computed(() => auth.user)
 const { logout } = useLogout()
 
 const route = useRoute()
-const router = useRouter()
 
 const dropdownOpen = ref(false)
 

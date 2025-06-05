@@ -69,6 +69,7 @@
   
   const form = reactive({
     name: '',
+    display_name: '',
     permission_names: [],
   })
   

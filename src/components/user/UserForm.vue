@@ -120,8 +120,6 @@
 </template>
 
 <script setup>
-  import axiosUser from '@/lib/axiosUser'
-
   import { onMounted, ref, computed, watch } from 'vue'
   import { useUserForm } from '@/composables/user/useUserForm'
   import { roleSelectOptions, organizationSelectOptions, userSelectOptions } from '@/services/selectOptionService'
@@ -185,21 +183,36 @@
     populate(props.modelValue)
   })
 
+  let debounceTimer = null
+
   watch(() => props.modelValue, (val) => populate(val), { immediate: true })
-  watch(() => form.email, async (val) => {
-    if (!val || val.length < 1) {
+  watch(() => form.email, (newEmail) => {
+    if (!newEmail || newEmail.length < 1) {
       searchResults.value = []
+      if (debounceTimer) {
+        clearTimeout(debounceTimer)
+        debounceTimer = null
+      }
       return
     }
 
-    try {
-      const res = await userSelectOptions({ params: { q: val } })
-      searchResults.value = res.data.data.data
-    } catch (err) {
-      console.error('Search error:', err)
-      searchResults.value = []
+    if (debounceTimer) {
+      clearTimeout(debounceTimer)
     }
-  })
+
+    debounceTimer = setTimeout(async () => {
+      try {
+        const res = await userSelectOptions({
+          params: { q: newEmail },
+        })
+        searchResults.value = res.data.data.data
+      } catch (err) {
+        console.error('Search error:', err)
+        searchResults.value = []
+      }
+      debounceTimer = null
+    }, 300)
+  }, { immediate: true })
 
   const selectUser = (user) => {
     form.email = user.email

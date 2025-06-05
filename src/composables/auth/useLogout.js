@@ -1,14 +1,17 @@
-import axios from '@/lib/axiosUser'
 import { useRouter } from 'vue-router'
+import { logoutService } from '@/services/authService'
 
 export function useLogout() {
   const router = useRouter()
 
   const logout = async () => {
     try {
-      await axios.post('/api/auth/logout')
+      await logoutService({
+        refresh_token: localStorage.getItem('refreshToken')
+      })
 
-      localStorage.removeItem('token')
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('refreshToken')
       localStorage.removeItem('user')
 
       router.push('/')

@@ -1,35 +1,69 @@
-# admin-portal-web
 
-This template should help get you started developing with Vue 3 in Vite.
+# Admin Portal Web
 
-## Recommended IDE Setup
+This is the frontend admin dashboard for the ERP system. It serves as the main interface for system admins and staff to manage users, roles, and other ERP features.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+---
 
-## Customize configuration
+## 🎯 Features
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- Responsive dashboard (Vue 3 + Tailwind CSS)
+- Role and permission management
+- User organization view
+- API integration with user_service
+- Admin authentication via token
 
-## Project Setup
+---
 
-```sh
+## 📦 Tech Stack
+
+- Vue 3 (Composition API)
+- Vue Router
+- Pinia (state management)
+- Axios
+- Tailwind CSS
+- Vite
+
+---
+
+## 🛠️ Setup Instructions
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/TonRichards/admin_portal_web.git
+cd admin_portal_web
+```
+
+### 2. Install dependencies
+
+```bash
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### 3. Configure environment
 
-```sh
+```bash
+VITE_API_URL=
+VITE_APPLICATION_ID=
+```
+
+### 4. Run in development mode
+
+```bash
 npm run dev
 ```
 
-### Compile and Minify for Production
+### 5. Build for production
 
-```sh
+```bash
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## Project Structure
 
-```sh
-npm run lint
-```
+- src/pages/ - Main route pages (Login, Dashboard, etc.)
+- src/components/ - Shared components (Sidebar, Table, etc.)
+- src/lib/axiosUser.js - Axios instance preconfigured for API
+- src/stores/ - Pinia stores (auth, permissions)
+- src/services/ - provide an API service
