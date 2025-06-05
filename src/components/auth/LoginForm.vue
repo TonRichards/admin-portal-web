@@ -31,12 +31,15 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { login } from '@/services/authService'
+import { useAuthStore } from '@/stores/authStore'
 
 const email = ref('')
 const password = ref('')
 const loading = ref(false)
 const error = ref('')
 const router = useRouter()
+
+const auth = useAuthStore()
 
 const handleLogin = async () => {
   error.value = ''
@@ -47,11 +50,11 @@ const handleLogin = async () => {
       password: password.value,
     })
 
-    const token = response.data.data.access_token
-    const user = response.data.data.user
+    const data = response.data.data
 
-    localStorage.setItem('token', token)
-    localStorage.setItem('user', JSON.stringify(user))
+    auth.setTokens(data.access_token, data.refresh_token)
+    auth.setUser(data.user)
+
     router.push('/dashboard')
   } catch (err) {
     error.value = 'Invalid credentials'

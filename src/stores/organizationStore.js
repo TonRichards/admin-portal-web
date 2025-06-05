@@ -19,8 +19,7 @@ export const useOrganizationStore = defineStore('org', {
       if (this.triedInit) return
       this.triedInit = true
 
-      const res = await axiosUser.get('/api/auth/check')
-      const user = res.data.data
+      const user = JSON.parse(localStorage.getItem('user'))
 
       this.list = user.organizations || []
 

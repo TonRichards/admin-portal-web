@@ -11,3 +11,9 @@ export const register = (params) => {
         ...params
     })
 }
+
+export const logout = (params) => {
+    return axiosUser.port('/api/auth/logout', {
+        ...params
+    })
+}
