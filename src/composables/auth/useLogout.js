@@ -1,16 +1,17 @@
 import { useRouter } from 'vue-router'
-import { login } from '@/services/authService'
+import { logoutService } from '@/services/authService'
 
 export function useLogout() {
   const router = useRouter()
 
   const logout = async () => {
     try {
-      await logout({
-        refresh_token: localStorage.removeItem('token')
+      await logoutService({
+        refresh_token: localStorage.getItem('refreshToken')
       })
 
-      localStorage.removeItem('token')
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('refreshToken')
       localStorage.removeItem('user')
 
       router.push('/')

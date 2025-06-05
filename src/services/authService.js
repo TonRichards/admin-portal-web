@@ -12,8 +12,8 @@ export const register = (params) => {
     })
 }
 
-export const logout = (params) => {
-    return axiosUser.port('/api/auth/logout', {
+export const logoutService = (params) => {
+    return axiosUser.post('/api/auth/logout', {
         ...params
     })
 }

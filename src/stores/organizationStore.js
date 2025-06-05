@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import axiosUser from '@/lib/axiosUser'
+import { useAuthStore } from '@/stores/authStore'
 
 export const useOrganizationStore = defineStore('org', {
   state: () => ({
@@ -19,7 +20,8 @@ export const useOrganizationStore = defineStore('org', {
       if (this.triedInit) return
       this.triedInit = true
 
-      const user = JSON.parse(localStorage.getItem('user'))
+      const auth = useAuthStore()
+      const user = auth.user
 
       this.list = user.organizations || []
 
