@@ -10,19 +10,22 @@
           class="w-full appearance-none text-sm bg-white border border-gray-300 rounded-lg py-1 px-4 pr-10 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         >
           <option v-if="!orgStore.currentOrgId" disabled value="">No organization found !!</option>
-          <option
-            v-for="o in orgStore.list"
-            :key="o.organization_id"
-            :value="o.organization_id"
-          >
+          <option v-for="o in orgStore.list" :key="o.organization_id" :value="o.organization_id">
             {{ o.name }}
           </option>
         </select>
 
         <!-- dropdown arrow -->
-        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+        <div
+          class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+        >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            ></path>
           </svg>
         </div>
       </div>
@@ -48,7 +51,6 @@
 </template>
 
 <script setup>
-
 import { useOrganizationStore } from '@/stores/organizationStore'
 
 import SidebarItem from './SidebarItem.vue'
@@ -61,8 +63,7 @@ import CogOutlineIcon from 'vue-material-design-icons/CogOutline.vue'
 import AccountOutlineIcon from 'vue-material-design-icons/AccountOutline.vue'
 import ShieldAccountOutlineIcon from 'vue-material-design-icons/ShieldAccountOutline.vue'
 import KeyOutlineIcon from 'vue-material-design-icons/KeyOutline.vue'
-import OfficeBuildingIcon from 'vue-material-design-icons/OfficeBuilding.vue';
+import OfficeBuildingIcon from 'vue-material-design-icons/OfficeBuilding.vue'
 
 const orgStore = useOrganizationStore()
-
 </script>
