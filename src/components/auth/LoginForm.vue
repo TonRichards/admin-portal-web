@@ -33,6 +33,8 @@ import { useRouter } from 'vue-router'
 import { login } from '@/services/authService'
 import { useAuthStore } from '@/stores/authStore'
 
+import { jwtDecode } from 'jwt-decode'
+
 const email = ref('')
 const password = ref('')
 const loading = ref(false)
@@ -52,11 +54,19 @@ const handleLogin = async () => {
 
     const data = response.data.data
 
+    const decoded = jwtDecode(data.access_token)
+
+    const user = {
+      ...data.user,
+      current_organization_id: decoded.current_organization_id,
+      organizations: decoded.organizations,
+    }
+
     auth.setTokens(data.access_token, data.refresh_token)
-    auth.setUser(data.user)
+    auth.setUser(user)
 
     router.push('/dashboard')
-  } catch (err) {
+  } catch (error) {
     error.value = 'Invalid credentials'
   } finally {
     loading.value = false

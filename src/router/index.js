@@ -3,6 +3,7 @@ import { useOrganizationStore } from '@/stores/organizationStore'
 import RequireOrgModal from '@/components/RequireOrgModal.vue'
 import RequireLoginModal from '@/components/RequireLoginModal.vue'
 import { createVNode, render } from 'vue'
+import { useAuthStore } from '@/stores/authStore'
 
 import LandingPage from '@/pages/landing/LandingPage.vue'
 import LoginPage from '@/pages/auth/LoginPage.vue'
@@ -16,12 +17,10 @@ import RolesPage from '@/pages/role/RolesPage.vue'
 import PermissionsPage from '@/pages/permission/PermissionsPage.vue'
 import OrganizationsPage from '@/pages/organization/OrganizationsPage.vue'
 
-import { checkAuth } from '@/lib/axiosUser'
-
 const routes = [
-  { path: '/', component: LandingPage, meta: { public: true }},
-  { path: '/login', component: LoginPage, meta: { public: true }},
-  { path: '/register', component: RegisterPage, meta: { public: true }},
+  { path: '/', component: LandingPage, meta: { public: true } },
+  { path: '/login', component: LoginPage, meta: { public: true } },
+  { path: '/register', component: RegisterPage, meta: { public: true } },
   // Admin pages
   { path: '/dashboard', component: DashboardPage },
   { path: '/orders', component: OrdersPage },
@@ -31,7 +30,7 @@ const routes = [
   { path: '/users/:id', component: UserDetailPage },
   { path: '/roles', component: RolesPage },
   { path: '/permissions', component: PermissionsPage },
-  { path: '/organizations', component: OrganizationsPage, meta: { public: true }},
+  { path: '/organizations', component: OrganizationsPage, meta: { public: true } },
 ]
 
 export const router = createRouter({
@@ -44,8 +43,10 @@ let modalVm = null
 router.beforeEach(async (to, from) => {
   const isPublic = to.meta.public
 
+  const auth = useAuthStore()
+  const user = auth.user
+
   const orgStore = useOrganizationStore()
-  const user = await checkAuth()
 
   if (!user && !isPublic) {
     if (!modalVm) {
@@ -98,4 +99,3 @@ router.beforeEach(async (to, from) => {
 
   return true
 })
-
