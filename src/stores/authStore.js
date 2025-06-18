@@ -29,6 +29,17 @@ export const useAuthStore = defineStore('auth', {
 
     setUser(user) {
       this.user = user
+      localStorage.setItem('user', JSON.stringify(user))
+    },
+
+    loadUser() {
+      const userStr = localStorage.getItem('user')
+      this.user = userStr ? JSON.parse(userStr) : null
+    },
+
+    clearUser() {
+      this.user = ''
+      localStorage.removeItem('user')
     },
 
     async refreshTokenIfNeeded() {
@@ -48,7 +59,10 @@ export const useAuthStore = defineStore('auth', {
         if (!res.ok) throw new Error('Refresh failed')
 
         const data = await res.json()
+
         this.setTokens(data.access_token, data.refresh_token)
+        this.setUser(data.user)
+
         return true
       } catch (err) {
         console.error('Refresh token failed', err)

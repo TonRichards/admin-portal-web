@@ -32,6 +32,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { login } from '@/services/authService'
 import { useAuthStore } from '@/stores/authStore'
+import { useOrganizationStore } from '@/stores/organizationStore'
 
 import { jwtDecode } from 'jwt-decode'
 
@@ -42,6 +43,7 @@ const error = ref('')
 const router = useRouter()
 
 const auth = useAuthStore()
+const orgStore = useOrganizationStore()
 
 const handleLogin = async () => {
   error.value = ''
@@ -59,11 +61,14 @@ const handleLogin = async () => {
     const user = {
       ...data.user,
       current_organization_id: decoded.current_organization_id,
+      current_organization_name: decoded.current_organization_name,
       organizations: decoded.organizations,
     }
 
     auth.setTokens(data.access_token, data.refresh_token)
     auth.setUser(user)
+
+    orgStore.init()
 
     router.push('/dashboard')
   } catch (error) {

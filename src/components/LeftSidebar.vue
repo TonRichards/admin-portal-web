@@ -33,17 +33,17 @@
 
     <nav class="flex-1 p-4 space-y-2 text-sm">
       <SidebarItem :icon="ViewDashboardOutlineIcon" label="Dashboard" to="/dashboard" />
-      <SidebarItem :icon="ReceiptOutlineIcon" label="Orders" to="/orders" />
-      <SidebarItem :icon="TruckOutlineIcon" label="Inventory" to="#" />
+      <SidebarItem :icon="ReceiptOutlineIcon" label="จัดการออร์เดอร์" to="/orders" />
+      <SidebarItem :icon="TruckOutlineIcon" label="คลังสินค้า" to="/inventories" />
 
       <SidebarCollapseItem
         :icon="CogOutlineIcon"
-        label="Settings"
+        label="จัดการผู้ใช้งาน"
         :children="[
-          { label: 'Users', to: '/users', icon: AccountOutlineIcon },
-          { label: 'Roles', to: '/roles', icon: ShieldAccountOutlineIcon },
-          { label: 'Permissions', to: '/permissions', icon: KeyOutlineIcon },
-          { label: 'Organizations', to: '/organizations', icon: OfficeBuildingIcon },
+          { label: 'ผู้ใช้งาน', to: '/users', icon: AccountOutlineIcon },
+          { label: 'สิทธิ์การใช้งาน', to: '/roles', icon: ShieldAccountOutlineIcon },
+          // { label: 'Permissions', to: '/permissions', icon: KeyOutlineIcon },
+          { label: 'จัดการบริษัท/ร้านค้า', to: '/organizations', icon: OfficeBuildingIcon },
         ]"
       />
     </nav>
@@ -62,7 +62,6 @@ import TruckOutlineIcon from 'vue-material-design-icons/TruckOutline.vue'
 import CogOutlineIcon from 'vue-material-design-icons/CogOutline.vue'
 import AccountOutlineIcon from 'vue-material-design-icons/AccountOutline.vue'
 import ShieldAccountOutlineIcon from 'vue-material-design-icons/ShieldAccountOutline.vue'
-import KeyOutlineIcon from 'vue-material-design-icons/KeyOutline.vue'
 import OfficeBuildingIcon from 'vue-material-design-icons/OfficeBuilding.vue'
 
 const orgStore = useOrganizationStore()

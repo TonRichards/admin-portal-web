@@ -2,15 +2,20 @@
   <div class="space-y-4">
     <div v-if="props.isLoading" class="text-center py-10 text-gray-500">Loading roles...</div>
     <div v-else-if="props.error" class="text-center text-red-500">{{ error }}</div>
-    <div v-else-if="!props.isLoading && props.roles.length === 0" class="text-center py-8 text-gray-500">No roles found.</div>
+    <div
+      v-else-if="!props.isLoading && props.roles.length === 0"
+      class="text-center py-8 text-gray-500"
+    >
+      No roles found.
+    </div>
 
     <div v-else class="overflow-auto rounded-xl shadow border bg-white">
       <table class="min-w-full text-sm text-left">
         <thead class="bg-gray-100">
           <tr>
-            <th class="px-6 py-3">Name</th>
-            <th class="px-6 py-3">Permissions</th>
-            <th class="px-6 py-3 text-center">Action</th>
+            <th class="px-6 py-3">ชื่อ</th>
+            <th class="px-6 py-3">สิทธิ์</th>
+            <th class="px-6 py-3 text-center">การจัดการ</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-100 text-sm">
@@ -19,8 +24,11 @@
 
             <td class="px-6 py-4">
               <div class="flex flex-wrap gap-2">
-                <span v-if="role.name === 'superadmin'" class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-                  All permissions
+                <span
+                  v-if="role.name === 'superadmin'"
+                  class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
+                >
+                  สิทธิ์ที่มี
                 </span>
                 <span
                   v-else
@@ -28,32 +36,24 @@
                   :key="permission.name"
                   class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
                 >
-                  {{ permission.label_en }}
+                  {{ permission.label_th }}
                 </span>
               </div>
             </td>
 
             <td class="px-6 py-4 text-center space-x-2">
-              <button
-                class="text-blue-600 hover:underline text-sm"
-                @click="editRole(role)"
-              >
-                Edit
+              <button class="text-blue-600 hover:underline text-sm" @click="editRole(role)">
+                แก้ไข
               </button>
-              <button
-                class="text-red-600 hover:underline text-sm"
-                @click="confirmDelete(role)"
-              >
-                Delete
+              <button class="text-red-600 hover:underline text-sm" @click="confirmDelete(role)">
+                ลบ
               </button>
             </td>
           </tr>
 
           <!-- ถ้าไม่มีข้อมูล -->
           <tr v-if="props.roles.length === 0">
-            <td colspan="3" class="px-6 py-4 text-center text-gray-400">
-              No roles found.
-            </td>
+            <td colspan="3" class="px-6 py-4 text-center text-gray-400">No roles found.</td>
           </tr>
         </tbody>
       </table>
@@ -83,7 +83,6 @@
 </template>
 
 <script setup>
-
 const editRole = (role) => {
   emit('edit', role)
 }
@@ -111,6 +110,6 @@ const props = defineProps({
   isLoading: Boolean,
   error: Object,
   pagination: Object,
-  currentPage: Number
+  currentPage: Number,
 })
 </script>

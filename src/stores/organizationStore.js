@@ -29,13 +29,16 @@ export const useOrganizationStore = defineStore('org', {
         this.currentOrgId = user.current_organization_id
       }
     },
+
     async switchOrganization(newOrgId) {
       try {
         await axiosUser.post('/api/auth/switch-organization', {
           organization_id: newOrgId,
         })
         this.currentOrgId = newOrgId
-        window.location.reload()
+        const auth = useAuthStore()
+
+        auth.refreshTokenIfNeeded()
       } catch (error) {
         console.error('Switch organization failed', error)
       }
@@ -43,6 +46,12 @@ export const useOrganizationStore = defineStore('org', {
 
     setCurrent(id) {
       this.currentOrgId = id
+    },
+
+    reset() {
+      this.list = []
+      this.currentOrgId = null
+      this.triedInit = false
     },
   },
 })

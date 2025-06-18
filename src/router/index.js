@@ -5,17 +5,18 @@ import RequireLoginModal from '@/components/RequireLoginModal.vue'
 import { createVNode, render } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 
-import LandingPage from '@/pages/landing/LandingPage.vue'
-import LoginPage from '@/pages/auth/LoginPage.vue'
-import RegisterPage from '@/pages/auth/RegisterPage.vue'
-import DashboardPage from '@/pages/dashboard/DashboardPage.vue'
-import OrdersPage from '@/pages/order/OrdersPage.vue'
-import UsersPage from '@/pages/user/UsersPage.vue'
-import UserCreatePage from '@/pages/user/UserCreatePage.vue'
-import UserDetailPage from '@/pages/user/UserDetailPage.vue'
-import RolesPage from '@/pages/role/RolesPage.vue'
-import PermissionsPage from '@/pages/permission/PermissionsPage.vue'
-import OrganizationsPage from '@/pages/organization/OrganizationsPage.vue'
+import LandingPage from '@/views/landing/LandingPage.vue'
+import LoginPage from '@/views/auth/LoginPage.vue'
+import RegisterPage from '@/views/auth/RegisterPage.vue'
+import DashboardPage from '@/views/dashboard/DashboardPage.vue'
+import OrdersPage from '@/views/order/OrdersPage.vue'
+import InventoriesPage from '@/views/inventory/InventoriesPage.vue'
+import UsersPage from '@/views/user/UsersPage.vue'
+import UserCreatePage from '@/views/user/UserCreatePage.vue'
+import UserDetailPage from '@/views/user/UserDetailPage.vue'
+import RolesPage from '@/views/role/RolesPage.vue'
+import PermissionsPage from '@/views/permission/PermissionsPage.vue'
+import OrganizationsPage from '@/views/organization/OrganizationsPage.vue'
 
 const routes = [
   { path: '/', component: LandingPage, meta: { public: true } },
@@ -24,6 +25,7 @@ const routes = [
   // Admin pages
   { path: '/dashboard', component: DashboardPage },
   { path: '/orders', component: OrdersPage },
+  { path: '/inventories', component: InventoriesPage },
   // Admin settings
   { path: '/users', component: UsersPage },
   { path: '/users/create', component: UserCreatePage },
@@ -44,8 +46,15 @@ router.beforeEach(async (to, from) => {
   const isPublic = to.meta.public
 
   const auth = useAuthStore()
-  const user = auth.user
 
+  auth.loadUser()
+  auth.loadTokens()
+
+  if (!auth.accessToken) {
+    await auth.refreshTokenIfNeeded()
+  }
+
+  const user = auth.user
   const orgStore = useOrganizationStore()
 
   if (!user && !isPublic) {
