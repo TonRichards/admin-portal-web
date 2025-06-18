@@ -1,11 +1,11 @@
 <template>
   <div class="flex min-h-screen bg-gray-100 text-gray-800">
-    <Sidebar />
+    <LeftSidebar />
     <div class="flex-1 flex flex-col">
       <!-- Topbar (optional) -->
       <header class="bg-white shadow p-4 flex items-center justify-between">
         <h1 class="text-xl font-bold text-blue-700">
-          {{ pageTitle }}
+          {{ user.current_organization_name ?? '' }}
         </h1>
 
         <!-- User Dropdown -->
@@ -20,8 +20,15 @@
               class="w-8 h-8 rounded-full"
             />
             <span class="hidden sm:inline">Paul Pogba</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-              viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <path d="M19 9l-7 7-7-7" />
             </svg>
           </button>
@@ -36,10 +43,7 @@
             >
               Profile
             </router-link>
-            <button
-              @click="logout"
-              class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-            >
+            <button @click="logout" class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
               Logout
             </button>
           </div>
@@ -55,10 +59,8 @@
 </template>
 
 <script setup>
-
 import { useAuthStore } from '@/stores/authStore'
-import Sidebar from '@/components/Sidebar.vue'
-import { useRoute, useRouter } from 'vue-router'
+import LeftSidebar from '@/components/LeftSidebar.vue'
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useLogout } from '@/composables/auth/useLogout'
 
@@ -67,14 +69,7 @@ const user = computed(() => auth.user)
 
 const { logout } = useLogout()
 
-const route = useRoute()
-
 const dropdownOpen = ref(false)
-
-const pageTitle = computed(() => {
-  const path = route.path.replace('/', '').split('/')[0]
-  return path.charAt(0).toUpperCase() + path.slice(1)
-})
 
 function handleClickOutside(event) {
   if (!event.target.closest('.relative')) {
@@ -97,5 +92,4 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
 })
-
 </script>

@@ -1,5 +1,7 @@
 import { useRouter } from 'vue-router'
 import { logoutService } from '@/services/authService'
+import { useAuthStore } from '@/stores/authStore'
+import { useOrganizationStore } from '@/stores/organizationStore'
 
 export function useLogout() {
   const router = useRouter()
@@ -7,12 +9,19 @@ export function useLogout() {
   const logout = async () => {
     try {
       await logoutService({
-        refresh_token: localStorage.getItem('refreshToken')
+        refresh_token: localStorage.getItem('refreshToken'),
       })
 
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('refreshToken')
-      localStorage.removeItem('user')
+      const auth = useAuthStore()
+      auth.loadTokens()
+      auth.clearTokens()
+
+      auth.loadUser()
+      auth.clearUser()
+
+      const organizationStore = useOrganizationStore()
+
+      organizationStore.reset()
 
       router.push('/')
     } catch (error) {
@@ -21,6 +30,6 @@ export function useLogout() {
   }
 
   return {
-    logout
+    logout,
   }
 }
