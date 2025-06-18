@@ -44,8 +44,15 @@ router.beforeEach(async (to, from) => {
   const isPublic = to.meta.public
 
   const auth = useAuthStore()
-  const user = auth.user
 
+  auth.loadUser()
+  auth.loadTokens()
+
+  if (!auth.accessToken) {
+    await auth.refreshTokenIfNeeded()
+  }
+
+  const user = auth.user
   const orgStore = useOrganizationStore()
 
   if (!user && !isPublic) {
