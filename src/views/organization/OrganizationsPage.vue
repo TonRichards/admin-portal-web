@@ -90,6 +90,8 @@ const saveOrganization = async (payload) => {
     isAddModalOpen.value = false
     fetchOrganizations()
     await auth.refreshTokenIfNeeded()
+
+    window.location.reload()
   } catch (err) {
     alert(err.response?.data?.message || err.message)
   }

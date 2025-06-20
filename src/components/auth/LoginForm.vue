@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
-    <h2 class="text-2xl font-bold text-center text-blue-700 mb-6">Login</h2>
+    <h2 class="text-2xl font-bold text-center text-blue-700 mb-6">Login เข้าสู่ระบบ</h2>
     <form @submit.prevent="handleLogin">
       <input
         v-model="email"

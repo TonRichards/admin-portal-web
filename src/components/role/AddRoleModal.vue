@@ -1,11 +1,11 @@
 <template>
   <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
     <div class="bg-white p-6 rounded-xl w-full max-w-md space-y-4 shadow-xl">
-      <h2 class="text-xl font-semibold">Add New Role</h2>
+      <h2 class="text-xl font-semibold">เพิ่มสิทธิ์การใช้งาน</h2>
 
       <!-- Role Name -->
       <div class="space-y-2">
-        <label class="block text-sm font-medium">Role Name</label>
+        <label class="block text-sm font-medium">ชื่อหรือตำแหน่งงาน</label>
         <input
           v-model="form.name"
           type="text"
@@ -15,7 +15,7 @@
 
       <!-- Display name -->
       <div class="space-y-2">
-        <label class="block text-sm font-medium">Display Name</label>
+        <label class="block text-sm font-medium">ชื่อหรือตำแหน่งงาน</label>
         <input
           v-model="form.display_name"
           type="text"
@@ -25,15 +25,15 @@
 
       <!-- Permissions -->
       <div class="space-y-2">
-        <label class="block text-sm font-medium">Permissions</label>
+        <label class="block text-sm font-medium">สิทธิ์ที่ควรมี</label>
         <div class="border rounded-xl p-2 max-h-40 overflow-y-auto space-y-1">
           <label
-            v-for="permission in permissions"
+            v-for="permission in props.permissions"
             :key="permission.id"
             class="flex items-center space-x-2 text-sm"
           >
             <input type="checkbox" :value="permission.name" v-model="form.permission_names" />
-            <span>{{ permission.label_en }} ({{ permission.name }})</span>
+            <span>{{ permission.label_th }}</span>
           </label>
         </div>
       </div>
@@ -56,6 +56,13 @@
 import { reactive } from 'vue'
 
 const emit = defineEmits(['close', 'saved'])
+
+const props = defineProps({
+  permissions: {
+    type: Array,
+    required: true,
+  },
+})
 
 const form = reactive({
   name: '',
